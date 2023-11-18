@@ -1,10 +1,11 @@
 version: "3.8"
 
-# gpuci has 2 AMD EPYC 7402 CPUs, 48 threads in total, with 504GB of RAM
+# ripper has an AMD Ryzen Threadripper 2990WX, 64 threads in total,
+# with 64 GB of RAM, and 12 GB of VRAM.
 
 services:
   buildkite:
-    hostname: gpuci.5
+    hostname: ripper
     build:
       context: ../../image/
       args:
@@ -12,16 +13,17 @@ services:
     runtime: nvidia
     environment:
       NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
-      NVIDIA_VISIBLE_DEVICES: "MIG-ce656940-2751-514d-be2e-0e98e6b56bf7"
       JULIA_CPU_THREADS: 2
     pid: "host" #  NVIDIA/gpu-monitoring-tools#63
+    devices:
+      - "/dev/dri:/dev/dri"
     env_file: ../token.env
     command:
       - start
       - --disconnect-after-job
       - --hooks-path=/hooks
-      - --tags=queue=juliagpu,cuda,cap=sm_80,gpu=a100,cap=recent
-      - --name=gpuci.5
-      - --priority=4
+      - --tags=queue=benchmark,cuda,cap=sm_89,cap=recent,gpu=rtx4070
+      - --name=ripper
+      - --priority=3
     volumes:
-      - /home/buildkite/gpuci.5:/root
+      - /home/buildkite:/root
