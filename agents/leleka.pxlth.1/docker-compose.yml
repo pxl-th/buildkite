@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  buildkite:
+    hostname: leleka.pxlth.com
+    build:
+      context: ../../image/
+      args:
+        base: pxlth/rocm-ci
+    environment:
+      JULIA_CPU_THREADS: 4
+      ROCR_VISIBLE_DEVICES: 0
+    devices:
+      - "/dev/dri:/dev/dri"
+      - "/dev/kfd:/dev/kfd"
+    security_opt:
+      - seccomp:unconfined
+    privileged: true
+    env_file: ../../token.env
+    command:
+      - start
+      - --disconnect-after-job
+      - --hooks-path=/hooks
+      - --tags=queue=juliagpu,rocm,rocmgpu=gfx1031
+      - --name=leleka.pxlth.1
+      - --priority=1
+    volumes:
+      - /home/pxl-th/buildkite-root/1:/root

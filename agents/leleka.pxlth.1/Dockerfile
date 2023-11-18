@@ -1,0 +1,5 @@
+FROM rocm/dev-ubuntu-22.04:5.4.2-complete
+
+ENV HSA_OVERRIDE_GFX_VERSION 10.3.0
+
+# ENV JULIA_AMDGPU_USE_DEVLIBS_JLL=true
