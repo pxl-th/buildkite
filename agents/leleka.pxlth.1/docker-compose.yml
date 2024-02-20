@@ -21,7 +21,7 @@ services:
       - start
       - --disconnect-after-job
       - --hooks-path=/hooks
-      - --tags=queue=juliagpu,rocm,rocmgpu=gfx1031
+      - --tags=queue=juliagpu,rocm,rocmgpu=gfx1100
       - --name=leleka.pxlth.1
       - --priority=1
     volumes:
